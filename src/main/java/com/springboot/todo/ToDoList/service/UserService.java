@@ -21,7 +21,7 @@ public class UserService {
     private final UserDao userDao;
 
     @Autowired
-    public UserService(@Qualifier("MongoDB") UserDao userDao) {
+    public UserService(@Qualifier("Users") UserDao userDao) {
         this.userDao = userDao;
     }
 

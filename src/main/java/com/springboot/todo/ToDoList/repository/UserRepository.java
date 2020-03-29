@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Repository("MongoDB")
+@Repository("Users")
 public class UserRepository implements UserDao {
     //Veritabanı işlemleri gelecek
     @NotNull
