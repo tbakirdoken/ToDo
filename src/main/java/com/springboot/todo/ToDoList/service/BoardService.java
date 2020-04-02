@@ -25,8 +25,8 @@ public class BoardService {
        return boardDao.addBoard(board);
     }
 
-    public List<Board> getAllBoards(){
-        return boardDao.getAllBoards();
+    public List<Board> getAllBoardsByUser(String userID, int page, int pageSize, String sortBy){
+        return boardDao.getAllBoardsByUser(userID, page, pageSize, sortBy);
     }
 
     public Optional<Board> getBoardById(String id){

@@ -9,7 +9,8 @@ public interface UserDao {
 
     User addUser(User user);
 
-    List<User> getAllUsers();
+
+    public List<User> getAllUsers(int page, int size, String sortBy);
 
     Optional<User> getUserById(String id);
 

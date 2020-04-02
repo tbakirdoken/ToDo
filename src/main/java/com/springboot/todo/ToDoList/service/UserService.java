@@ -26,12 +26,11 @@ public class UserService {
     }
 
     public User addUser(User user) {
-
         return userDao.addUser(user);
     }
 
-    public List<User> getAllUsers() {
-        return userDao.getAllUsers();
+    public List<User> getAllUsers(int page, int size, String sortBy) {
+        return userDao.getAllUsers(page, size, sortBy);
     }
 
     public Optional<User> getUserById(String id){

@@ -25,8 +25,8 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<Item> getAllItems(){
-        return itemService.getAllItems();
+    public List<Item> getAllItemsByBoard(@RequestParam String boardID, @RequestParam(defaultValue = "0", required = false) int page, @RequestParam(defaultValue = "10", required = false) int pageSize, @RequestParam(defaultValue = "updatedAt", required = false) String sortBy ){
+        return itemService.getAllItemsByBoard(boardID, page, pageSize, sortBy);
     }
 
     @GetMapping(path = "{id}")

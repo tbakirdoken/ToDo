@@ -6,6 +6,8 @@ import com.springboot.todo.ToDoList.model.User;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -28,8 +30,13 @@ public class BoardRepository implements BoardDao {
     }
 
     @Override
-    public List<Board> getAllBoards() {
-        return mongoTemplate.findAll(Board.class);
+    public List<Board> getAllBoardsByUser(String userID, int page, int pageSize, String sortBy) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize, Sort.by(sortBy));
+        return mongoTemplate.find(
+                new Query()
+                        .addCriteria(Criteria.where("userID").is(userID))
+                        .with(pageRequest),
+                Board.class);
     }
 
     @Override

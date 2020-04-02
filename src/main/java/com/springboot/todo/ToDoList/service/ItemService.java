@@ -23,8 +23,8 @@ public class ItemService {
         return itemDao.addItem(item);
     }
 
-    public List<Item> getAllItems(){
-        return itemDao.getAllItems();
+    public List<Item> getAllItemsByBoard(String boardID, int page, int pageSize, String sortBy){
+        return itemDao.getAllItemsByBoard(boardID, page, pageSize, sortBy);
     }
 
     public Optional<Item> getItemById(String id){

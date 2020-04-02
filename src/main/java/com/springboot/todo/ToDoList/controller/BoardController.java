@@ -1,6 +1,7 @@
 package com.springboot.todo.ToDoList.controller;
 
 import com.springboot.todo.ToDoList.model.Board;
+import com.springboot.todo.ToDoList.model.Item;
 import com.springboot.todo.ToDoList.service.BoardService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class BoardController {
     }
 
     @GetMapping
-    public List<Board> getAllBoards(){
-        return boardService.getAllBoards();
+    public List<Board> getAllBoardsByUser(@RequestParam String userID, @RequestParam(defaultValue = "0", required = false) int page, @RequestParam(defaultValue = "10", required = false) int pageSize, @RequestParam(defaultValue = "updatedAt", required = false) String sortBy ){
+        return boardService.getAllBoardsByUser(userID, page, pageSize, sortBy);
     }
 
     @GetMapping(path = "{id}")
