@@ -5,6 +5,8 @@ import com.springboot.todo.ToDoList.model.Board;
 import com.springboot.todo.ToDoList.model.Item;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -27,8 +29,13 @@ public class ItemRepository implements ItemDao {
     }
 
     @Override
-    public List<Item> getAllItems() {
-        return mongoTemplate.findAll(Item.class);
+    public List<Item> getAllItemsByBoard(String boardID, int page, int pageSize, String sortBy) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize, Sort.by(sortBy));
+        return mongoTemplate.find(
+                new Query()
+                .addCriteria(Criteria.where("boardID").is(boardID))
+                .with(pageRequest),
+                Item.class);
     }
 
     @Override

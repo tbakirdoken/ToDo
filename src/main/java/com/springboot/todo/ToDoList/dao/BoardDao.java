@@ -9,7 +9,7 @@ public interface BoardDao {
 
     Board addBoard(Board board);
 
-    List<Board> getAllBoards();
+    List<Board> getAllBoardsByUser(String userID, int page, int pageSize, String sortBy);
 
     Optional<Board> getBoardById(String id);
 

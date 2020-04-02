@@ -10,7 +10,7 @@ public interface ItemDao {
 
     Item addItem(Item item);
 
-    List<Item> getAllItems();
+    List<Item> getAllItemsByBoard(String boardID, int page, int pageSize, String sortBy);
 
     Optional<Item> getItemById(String id);
 

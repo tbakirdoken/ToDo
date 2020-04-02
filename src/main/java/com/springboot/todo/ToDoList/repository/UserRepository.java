@@ -6,13 +6,17 @@ import com.springboot.todo.ToDoList.dao.UserDao;
 import com.springboot.todo.ToDoList.model.User;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.NotNull;
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,8 +34,9 @@ public class UserRepository implements UserDao {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return mongoTemplate.findAll(User.class);
+    public List<User> getAllUsers(int page, int size, String sortBy) {
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return mongoTemplate.find( new Query().with(pageable), User.class);
     }
 
     @Override
