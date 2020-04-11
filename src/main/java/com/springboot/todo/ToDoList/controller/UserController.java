@@ -1,9 +1,13 @@
 package com.springboot.todo.ToDoList.controller;
 
 import com.google.common.collect.Lists;
+import com.springboot.todo.ToDoList.dto.Response.UserResponse;
 import com.springboot.todo.ToDoList.model.User;
 import com.springboot.todo.ToDoList.service.UserService;
+import com.springboot.todo.ToDoList.util.ResponseUtil;
+import com.springboot.todo.ToDoList.viewmodel.MainResponse;
 import io.swagger.annotations.Api;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 @Api
 public class UserController {
 
@@ -27,32 +31,31 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User addUser(@NotNull @RequestBody User user) {
-        return userService.addUser(user);
+    public ResponseEntity<MainResponse<UserResponse>> addUser(@NotNull @RequestBody User user) {
+        return ResponseUtil.data(userService.addUser(user), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<User> getAllUsers(@RequestParam(defaultValue = "0", required = false) int page, @RequestParam(defaultValue = "10", required = false) int pageSize, @RequestParam(defaultValue = "ID", required = false) String sortBy) {
-        return userService.getAllUsers(page, pageSize, sortBy);
+    public ResponseEntity<MainResponse<List<UserResponse>>> getAllUsers(@RequestParam(defaultValue = "0", required = false) int page,
+                                  @RequestParam(defaultValue = "10", required = false) int pageSize,
+                                  @RequestParam(defaultValue = "id", required = false) String sortBy) {
+        return ResponseUtil.data(userService.getAllUsers(page, pageSize, sortBy));
     }
 
     @GetMapping(path = "{id}")
-    Optional<User> getUserById(@NotNull @PathVariable("id") String id){
-        return userService.getUserById(id);
+    ResponseEntity<MainResponse<UserResponse>> getUserById(@NotNull @PathVariable("id") ObjectId id){
+        return ResponseUtil.data(userService.getUserById(id));
     }
 
     @PutMapping(path = "{id}")
-    public User updateUser(@PathVariable("id") String id, @RequestBody User updatedUser) {
-        return userService.updateUser(id, updatedUser);
+    public ResponseEntity<MainResponse<UserResponse>> updateUser(@PathVariable("id") ObjectId id, @RequestBody User updatedUser) {
+        return ResponseUtil.data(userService.updateUser(id, updatedUser));
     }
 
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") String id) {
+    public ResponseEntity<MainResponse<String>> deleteUser(@PathVariable("id") ObjectId id) {
         userService.deleteUser(id);
-        return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+        return ResponseUtil.data("Deleted", HttpStatus.NO_CONTENT);
     }
-
-
-
 
 }

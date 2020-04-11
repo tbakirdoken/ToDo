@@ -1,9 +1,6 @@
 package com.springboot.todo.ToDoList.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,28 +16,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document("Users")
-public class User {
-
-    @Id
-    private String ID;
+public class User extends BaseModel{
 
     private String firstName;
 
     private String lastName;
 
-    @NotBlank
-    @NotNull
     private String email;
 
-    @NotNull
-    @Min(4)
-    @Max(6)
     private String password;
 
-    private boolean isActive;
+    private boolean isActive = true;
 
     private Date lastLogin;
-
-    private Date dateJoined;
 
 }

@@ -1,7 +1,5 @@
 package com.springboot.todo.ToDoList.repository;
 
-import com.mongodb.Mongo;
-import com.mongodb.client.result.UpdateResult;
 import com.springboot.todo.ToDoList.dao.UserDao;
 import com.springboot.todo.ToDoList.model.User;
 import lombok.RequiredArgsConstructor;
@@ -12,19 +10,17 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.NotNull;
-import java.awt.print.Pageable;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Repository("Users")
 public class UserRepository implements UserDao {
-    //Veritabanı işlemleri gelecek
+
     @NotNull
     final MongoTemplate mongoTemplate;
 
@@ -40,29 +36,29 @@ public class UserRepository implements UserDao {
     }
 
     @Override
-    public Optional<User> getUserById(String id) {
-        return Optional.ofNullable(mongoTemplate.findById(new ObjectId(id), User.class));
+    public Optional<User> getUserById(ObjectId id) {
+        return Optional.ofNullable(mongoTemplate.findById(id, User.class));
     }
 
     @Override
-    public void updateUser(String id, User updatedUser) {
-        updatedUser.setID(id);
+    public void updateUser(ObjectId id, User updatedUser) {
+        updatedUser.setId(id);
+        updatedUser.setUpdateDate(new Date());
         mongoTemplate.save(updatedUser);
-//        mongoTemplate.updateFirst(
-//                Query.query(Criteria.where("ID").is(id)),
-//                new Update()
-//                        .set("firstName", updatedUser.getFirstName())
-//                        .set("lastName", updatedUser.getLastName())
-//                        .set("email", updatedUser.getEmail())
-//                        .set("password", updatedUser.getPassword())
-//                        .set("isActive", updatedUser.isActive())
-//                        .set("lastLogin", updatedUser.getLastLogin())
-//                        .set("dateJoined", updatedUser.getDateJoined()), User.class);
-
     }
 
     @Override
-    public void deleteUser(String id) {
-         mongoTemplate.findAndRemove(Query.query(Criteria.where("ID").is(id)), User.class);
+    public void deleteUser(ObjectId id) {
+        mongoTemplate.updateFirst(
+                Query.query(Criteria.where("id").is(id)),
+                new Update()
+                        .set("isActive", "0"), User.class);
+         // mongoTemplate.findAndRemove(Query.query(Criteria.where("ID").is(id)), User.class);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return Optional.ofNullable(mongoTemplate.findOne(Query.query(Criteria.where("email").is(email)), User.class));
+
     }
 }
