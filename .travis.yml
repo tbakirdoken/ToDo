@@ -6,3 +6,9 @@ install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script:
   - mvn test -B
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=tbakirdoken_ToDo
+addons:
+  sonarcloud:
+    organization: "tbakirdoken"
+    token:
+      secure: iXlGvn1k4y7T2/z/MhXsguCRzJIklrfiYsTCBBcpvQWTe+AIpo/c+rpJXCY8XEbHAOK+NL2tT+PcsO3FMwJaGKDbEmoec7iZrkDCONQOxXLtztoe21y/hC4ipPQH89lBKWVmXlxzNpxMKZFay6pfnrcVKDqyKacoWj8cxCW4czKUr7o+9cTcsSigmkaeg+sqn/vCQfEA6UhjkNpgZa+C+e8sW/pqcYnBzWZ6Xwaw42aBOuQipk0E2WmGZpMOpaYZ1AF9tD46drb2DkSRKDbzY6QlD//I79c77pnSjlf0FMHN4egq1l+2SHpq6NBs8k2QfD1xR/iBK32z1T3e07noVeRmkvcheWXrjIZa6EmQs4o6xicgqWlVVhk/UKwQQLYEKOXJiqRyb0k6oec39n/ydQEa6wahky/wIVYrYJN3OREbw8C3ZOzPUkd7tXKKVsBZqKplXSKFeuASgNpRZ8unywfoPToYX/4oVTA/GaDJEFz+iFYcjYcs924BpKsjeETRojqAmrfyEUj9Ngpprl2Vv6Aq0drv/S7H5uc6HYELRZs00gPwuIHRTUMeMIKz16M66ZHTxeDejdrg2yF7hbAY1j2PU5Dx6Wy0FUBBK/K3kt9iv7vVq0X1maUtlUGDB87jDZvgIgn2+q5DyYvb6tECPWNJE2LzEIKPsATabGo0Bjc=
