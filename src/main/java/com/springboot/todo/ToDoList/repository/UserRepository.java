@@ -42,9 +42,13 @@ public class UserRepository implements UserDao {
 
     @Override
     public void updateUser(ObjectId id, User updatedUser) {
-        updatedUser.setId(id);
         updatedUser.setUpdateDate(new Date());
-        mongoTemplate.save(updatedUser);
+        mongoTemplate.updateFirst(
+                Query.query(Criteria.where("id").is(id)),
+                new Update().set("firstName", updatedUser.getFirstName())
+                .set("lastName", updatedUser.getLastName())
+                .set("email", updatedUser.getEmail())
+                .set("lastLogin", updatedUser.getLastLogin()), User.class);
     }
 
     @Override
@@ -52,7 +56,7 @@ public class UserRepository implements UserDao {
         mongoTemplate.updateFirst(
                 Query.query(Criteria.where("id").is(id)),
                 new Update()
-                        .set("isActive", "0"), User.class);
+                        .set("isActive", false), User.class);
          // mongoTemplate.findAndRemove(Query.query(Criteria.where("ID").is(id)), User.class);
     }
 

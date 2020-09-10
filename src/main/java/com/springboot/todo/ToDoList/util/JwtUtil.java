@@ -17,6 +17,7 @@ import java.util.Date;
 public  class JwtUtil {
 
     private static final String TOKEN_SECRET = "s4T2zOIWHMM1sxq";
+    private static final long EXPIRE_AT = 86_400_000; //1day
 
     public String createToken(ObjectId userId) {
         try {
@@ -24,6 +25,7 @@ public  class JwtUtil {
             return JWT.create()
                     .withClaim("userId", userId.toString())
                     .withClaim("createdAt", new Date())
+                    .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRE_AT))
                     .sign(algorithm);
 
         } catch (UnsupportedEncodingException exception) {

@@ -1,14 +1,20 @@
 package com.springboot.todo.ToDoList.controller;
 
+import com.springboot.todo.ToDoList.dto.Response.BoardResponse;
 import com.springboot.todo.ToDoList.model.Board;
 import com.springboot.todo.ToDoList.model.Item;
 import com.springboot.todo.ToDoList.service.BoardService;
+import com.springboot.todo.ToDoList.util.JwtUtil;
+import com.springboot.todo.ToDoList.util.ResponseUtil;
+import com.springboot.todo.ToDoList.viewmodel.MainResponse;
 import io.swagger.annotations.Api;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,28 +27,30 @@ public class BoardController {
     private BoardService boardService;
 
     @PostMapping
-    public Board addBoard(@RequestBody Board board){
-        return boardService.addBoard(board);
+    public ResponseEntity<MainResponse<BoardResponse>> addBoard(@RequestBody Board board, HttpServletRequest httpServletRequest){
+        String id = JwtUtil.getObjectIdFromRequest(httpServletRequest);
+        board.setUserID(id);
+        return ResponseUtil.data(boardService.addBoard(board), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<Board> getAllBoardsByUser(@RequestParam String userID, @RequestParam(defaultValue = "0", required = false) int page, @RequestParam(defaultValue = "10", required = false) int pageSize, @RequestParam(defaultValue = "updatedAt", required = false) String sortBy ){
-        return boardService.getAllBoardsByUser(userID, page, pageSize, sortBy);
+    public ResponseEntity<MainResponse<List<BoardResponse>>> getAllBoardsByUser(@RequestParam String userID, @RequestParam(defaultValue = "0", required = false) int page, @RequestParam(defaultValue = "10", required = false) int pageSize, @RequestParam(defaultValue = "updatedAt", required = false) String sortBy ){
+        return ResponseUtil.data(boardService.getAllBoardsByUser(userID, page, pageSize, sortBy));
     }
 
     @GetMapping(path = "{id}")
-    public Optional<Board> getBoardById(@PathVariable String id){
-        return boardService.getBoardById(id);
+    public ResponseEntity<MainResponse<BoardResponse>> getBoardById(@PathVariable ObjectId id){
+        return ResponseUtil.data(boardService.getBoardById(id));
     }
 
     @PutMapping(path = "{id}")
-    public Board updateBoard(@PathVariable("id") String id, @RequestBody Board updatedBoard){
-         return boardService.updateBoard(id, updatedBoard);
+    public ResponseEntity<MainResponse<BoardResponse>> updateBoard(@PathVariable("id") ObjectId id, @RequestBody Board updatedBoard){
+         return ResponseUtil.data(boardService.updateBoard(id, updatedBoard));
     }
 
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<String> deleteBoard(@PathVariable("id") String id){
+    public ResponseEntity<MainResponse<String>> deleteBoard(@PathVariable("id") ObjectId id){
         boardService.deleteBoard(id);
-        return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+        return ResponseUtil.data("Deleted", HttpStatus.NO_CONTENT);
     }
 }

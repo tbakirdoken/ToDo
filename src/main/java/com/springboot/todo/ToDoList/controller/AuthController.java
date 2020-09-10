@@ -29,11 +29,9 @@ public class AuthController {
 
     }
 
-    @GetMapping("login")
+    @PostMapping("login")
     public ResponseEntity<MainResponse<AuthResponse>> login(
-            @RequestParam(name = "email") String email,
-            @RequestParam String password) {
-
-        return ResponseUtil.data(authService.loginUser(email, password));
+            @RequestBody AuthRequest authRequest) {
+        return ResponseUtil.data(authService.loginUser(authRequest.getEmail(), authRequest.getPassword()));
     }
 }

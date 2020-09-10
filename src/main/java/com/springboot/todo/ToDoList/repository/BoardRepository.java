@@ -11,9 +11,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,18 +42,18 @@ public class BoardRepository implements BoardDao {
     }
 
     @Override
-    public Optional<Board> getBoardById(String id) {
-        return Optional.ofNullable(mongoTemplate.findById(new ObjectId(id), Board.class));
+    public Optional<Board> getBoardById(ObjectId id) {
+        return Optional.ofNullable(mongoTemplate.findById(id, Board.class));
     }
 
     @Override
-    public void updateBoard(String id, Board updatedBoard) {
-        updatedBoard.setID(id);
-        mongoTemplate.save(updatedBoard);
+    public void updateBoard(ObjectId id, Board updatedBoard) {
+        mongoTemplate.updateFirst(Query.query(Criteria.where("id").is(id)), new Update().set("name", updatedBoard.getName())
+                .set("updateDate", new Date()), Board.class);
     }
 
     @Override
-    public void deleteBoard(String id) {
-        mongoTemplate.findAndRemove(Query.query(Criteria.where("ID").is(id)), Board.class);
+    public void deleteBoard(ObjectId id) {
+        mongoTemplate.findAndRemove(Query.query(Criteria.where("id").is(id)), Board.class);
     }
 }

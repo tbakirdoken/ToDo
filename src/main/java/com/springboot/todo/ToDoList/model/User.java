@@ -16,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document("Users")
+@Builder
 public class User extends BaseModel{
 
     private String firstName;

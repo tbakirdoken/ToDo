@@ -44,7 +44,7 @@ public class AuthService {
         User savedUser = userRepository.addUser(user);
 
         AuthResponse authResponse = AuthMapper.map.userToAuthResponse(savedUser);
-        authResponse.setToken(jwtUtil.createToken(savedUser.getId()));
+        //authResponse.setToken(jwtUtil.createToken(savedUser.getId()));
         return authResponse;
     }
 

@@ -11,7 +11,6 @@ public class MainResponse<T> {
     private boolean success;
 
 
-
     private MainResponse(String errMessage, String errorCode) {
         this.errorMessage = new ErrorResponse(errMessage,errorCode);
     }

@@ -1,6 +1,7 @@
 package com.springboot.todo.ToDoList.dao;
 
 import com.springboot.todo.ToDoList.model.Board;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +12,9 @@ public interface BoardDao {
 
     List<Board> getAllBoardsByUser(String userID, int page, int pageSize, String sortBy);
 
-    Optional<Board> getBoardById(String id);
+    Optional<Board> getBoardById(ObjectId id);
 
-    void updateBoard(String id, Board updatedBoard);
+    void updateBoard(ObjectId id, Board updatedBoard);
 
-    void deleteBoard(String id);
+    void deleteBoard(ObjectId id);
 }

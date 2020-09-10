@@ -14,16 +14,10 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document("Boards")
-public class Board {
-
-    @Id
-    private String ID;
+public class Board extends BaseModel {
 
     private String userID;
 
     private String name;
 
-    private Date createdAt;
-
-    private Date updatedAt;
 }
